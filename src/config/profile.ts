@@ -37,11 +37,9 @@ export interface ProfileConfig {
   icp: {
     number: string;
     url: string;
+    gongan: string;
+    gonganUrl: string;
   };
-
-  // 其他信息
-  github: string;
-  website: string;
 }
 
 export const profileConfig: ProfileConfig = {
