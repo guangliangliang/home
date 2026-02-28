@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { profileConfig } from '@/config/profile';
+import { profileConfig } from "@/config/profile";
 
-const { 
-  name, 
-  title, 
-  avatar, 
-  bio, 
-  location, 
+const {
+  name,
+  title,
+  avatar,
+  bio,
+  location,
   email,
-  socialLinks, 
-  projects, 
+  socialLinks,
+  projects,
   skills,
   icp,
-  github,
-  website
 } = profileConfig;
 </script>
 
@@ -27,16 +25,16 @@ const {
       <h1 class="name">{{ name }}</h1>
       <p class="title">{{ title }}</p>
       <p class="bio">{{ bio }}</p>
-      
+
       <div class="meta">
         <span class="location">📍 {{ location }}</span>
         <span class="email">📧 {{ email }}</span>
       </div>
-      
+
       <!-- 社交链接 -->
       <div class="social-links">
-        <a 
-          v-for="link in socialLinks" 
+        <a
+          v-for="link in socialLinks"
           :key="link.name"
           :href="link.url"
           target="_blank"
@@ -44,9 +42,6 @@ const {
           class="social-link"
         >
           {{ link.name }}
-        </a>
-        <a :href="github" target="_blank" rel="noopener noreferrer" class="social-link">
-          GitHub
         </a>
       </div>
     </header>
@@ -65,8 +60,8 @@ const {
     <section class="section projects-section">
       <h2 class="section-title">🚀 项目合集</h2>
       <div class="projects">
-        <a 
-          v-for="project in projects" 
+        <a
+          v-for="project in projects"
           :key="project.name"
           :href="project.url"
           target="_blank"
@@ -87,14 +82,18 @@ const {
 
     <!-- 页脚备案信息 -->
     <footer class="footer">
-      <p>
-        © {{ new Date().getFullYear() }} {{ name }}. All rights reserved.
-      </p>
-      <p>
+      <p>© {{ new Date().getFullYear() }} {{ name }}. All rights reserved.</p>
+      <div class="icp-links">
         <a :href="icp.url" target="_blank" rel="noopener noreferrer">
           {{ icp.number }}
         </a>
-      </p>
+        <template v-if="icp.gongan">
+          <span class="divider">|</span>
+          <a :href="icp.gonganUrl" target="_blank" rel="noopener noreferrer">
+            {{ icp.gongan }}
+          </a>
+        </template>
+      </div>
     </footer>
   </div>
 </template>
@@ -279,20 +278,32 @@ const {
   opacity: 1;
 }
 
+.icp-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.icp-links .divider {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 @media (max-width: 768px) {
   .name {
     font-size: 2rem;
   }
-  
+
   .meta {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .section {
     padding: 20px;
   }
-  
+
   .projects {
     grid-template-columns: 1fr;
   }
