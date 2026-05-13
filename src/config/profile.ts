@@ -98,6 +98,20 @@ export const profileConfig: ProfileConfig = {
       tags: ["简历"],
       icon: "📄",
     },
+    {
+      name: "免费API",
+      description: "免费API接口集合，提供各类常用开放接口供开发使用",
+      url: "http://free.lingliang.top/",
+      tags: ["API", "免费资源", "后端"],
+      icon: "🔌",
+    },
+    {
+      name: "开发工具",
+      description: "在线开发工具集合，包含前端开发常用辅助工具",
+      url: "http://tools.lingliang.top/",
+      tags: ["开发工具", "效率", "实用工具"],
+      icon: "🛠️",
+    },
   ],
 
   skills: [
