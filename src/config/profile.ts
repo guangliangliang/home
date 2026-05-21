@@ -112,6 +112,20 @@ export const profileConfig: ProfileConfig = {
       tags: ["开发工具", "效率", "实用工具"],
       icon: "🛠️",
     },
+    {
+      name: "AI工具集",
+      description: "AI工具集合，包含各类人工智能工具和应用",
+      url: "https://ai.lingliang.top/",
+      tags: ["AI", "人工智能", "工具"],
+      icon: "🤖",
+    },
+    {
+      name: "游戏集合",
+      description: "游戏合集，包含各类有趣的在线游戏",
+      url: "http://games.lingliang.top/",
+      tags: ["游戏", "娱乐", "在线游戏"],
+      icon: "🎮",
+    },
   ],
 
   skills: [
