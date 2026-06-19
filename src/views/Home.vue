@@ -673,33 +673,4 @@ const getParticleStyle = (i: number) => {
     grid-template-columns: 1fr;
   }
 }
-
-  .name {
-    font-size: 2.2rem;
-  }
-
-  .avatar {
-    width: 120px;
-    height: 120px;
-  }
-
-  .avatar-glow {
-    width: 140px;
-    height: 140px;
-  }
-
-  .contact-info {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .section {
-    padding: 30px 24px;
-    border-radius: 20px;
-  }
-
-  .projects {
-    grid-template-columns: 1fr;
-  }
-}
 </style>
