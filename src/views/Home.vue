@@ -255,7 +255,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1300px;
   margin: 0 auto;
   position: relative;
   z-index: 10;
