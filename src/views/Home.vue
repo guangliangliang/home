@@ -503,7 +503,7 @@ const getParticleStyle = (i: number) => {
 /* 项目区域 */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -629,10 +629,50 @@ const getParticleStyle = (i: number) => {
 }
 
 /* 响应式设计 */
+@media (max-width: 1024px) {
+  .projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .home {
-    padding: 35px 15px;
+    padding: 70px 15px;
   }
+
+  .name {
+    font-size: 2.2rem;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .avatar-ring-1 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .avatar-ring-2 {
+    width: 135px;
+    height: 135px;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section {
+    padding: 30px 24px;
+    border-radius: 20px;
+  }
+
+  .projects {
+    grid-template-columns: 1fr;
+  }
+}
 
   .name {
     font-size: 2.2rem;
