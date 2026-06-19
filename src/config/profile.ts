@@ -15,6 +15,11 @@ export interface SocialLink {
   icon: string;
 }
 
+export interface Skill {
+  name: string;
+  url: string;
+}
+
 export interface ProfileConfig {
   // 基本信息
   name: string;
@@ -31,7 +36,7 @@ export interface ProfileConfig {
   projects: Project[];
 
   // 技能标签
-  skills: string[];
+  skills: Skill[];
 
   // 备案信息
   icp: {
@@ -129,14 +134,14 @@ export const profileConfig: ProfileConfig = {
   ],
 
   skills: [
-    "Vue.js",
-    "React",
-    "TypeScript",
-    "JavaScript",
-    "HTML/CSS",
-    "Node.js",
-    "Webpack",
-    "Vite",
+    { name: "Vue.js", url: "https://vuejs.org/" },
+    { name: "React", url: "https://react.dev/" },
+    { name: "TypeScript", url: "https://www.typescriptlang.org/" },
+    { name: "JavaScript", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+    { name: "HTML/CSS", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+    { name: "Node.js", url: "https://nodejs.org/" },
+    { name: "Webpack", url: "https://webpack.js.org/" },
+    { name: "Vite", url: "https://vitejs.dev/" },
   ],
   icp: {
     number: "京 ICP 备 2026005080 号",
