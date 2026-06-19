@@ -72,6 +72,7 @@ const getParticleStyle = (i: number) => {
   ];
   
   const pos = positions[(i - 1) % positions.length];
+  if (!pos) return {};
   return {
     top: pos.top,
     left: pos.left,
