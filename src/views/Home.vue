@@ -12,6 +12,7 @@ const {
   socialLinks,
   projects,
   skills,
+  miniPrograms,
   icp,
 } = profileConfig;
 
@@ -169,6 +170,35 @@ const getParticleStyle = (i: number) => {
               </div>
             </div>
           </a>
+        </div>
+      </section>
+
+      <!-- 小程序区域 -->
+      <section class="section miniprograms-section">
+        <h2 class="section-title">📱 微信小程序</h2>
+        <div class="miniprograms">
+          <div
+            v-for="mp in miniPrograms"
+            :key="mp.name"
+            class="miniprogram-card"
+          >
+            <div class="qrcode-wrapper">
+              <img
+                :src="mp.qrcode"
+                :alt="`${mp.name} 小程序二维码`"
+                class="qrcode-img"
+                loading="lazy"
+              />
+            </div>
+            <h3 class="miniprogram-name">{{ mp.name }}</h3>
+            <p class="miniprogram-desc">{{ mp.description }}</p>
+            <div class="miniprogram-tags">
+              <span v-for="tag in mp.tags" :key="tag" class="miniprogram-tag">
+                {{ tag }}
+              </span>
+            </div>
+            <p class="scan-hint">微信扫码体验</p>
+          </div>
         </div>
       </section>
 
@@ -596,6 +626,125 @@ const getParticleStyle = (i: number) => {
   transform: scale(1.05);
 }
 
+/* 小程序区域 */
+.miniprograms {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.miniprogram-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 24px;
+  color: var(--text-primary);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.miniprogram-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--skill-gradient);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.miniprogram-card:hover::before {
+  transform: scaleX(1);
+}
+
+.miniprogram-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  border-color: #667eea;
+}
+
+.qrcode-wrapper {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1 / 1;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  transition: transform 0.4s ease;
+}
+
+.miniprogram-card:hover .qrcode-wrapper {
+  transform: scale(1.04);
+}
+
+.qrcode-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.miniprogram-name {
+  font-size: 1.25rem;
+  margin: 0 0 10px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.miniprogram-desc {
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin: 0 0 16px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.miniprogram-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.miniprogram-tag {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.miniprogram-card:hover .miniprogram-tag {
+  background: rgba(102, 126, 234, 0.2);
+  transform: scale(1.05);
+}
+
+.scan-hint {
+  margin: auto 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  opacity: 0.75;
+}
+
 /* 页脚 */
 .footer {
   text-align: center;
@@ -631,6 +780,10 @@ const getParticleStyle = (i: number) => {
 /* 响应式设计 */
 @media (max-width: 1024px) {
   .projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .miniprograms {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -670,6 +823,10 @@ const getParticleStyle = (i: number) => {
   }
 
   .projects {
+    grid-template-columns: 1fr;
+  }
+
+  .miniprograms {
     grid-template-columns: 1fr;
   }
 }

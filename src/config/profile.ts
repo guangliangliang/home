@@ -1,6 +1,10 @@
 // 个人主页配置文件
 // 修改这里的配置来更新页面内容
 import logoSrc from "@/assets/image/logo.png";
+import qrBorderWatchman from "@/assets/image/qrcode/border-watchman.jpg";
+import qrVillageGuard from "@/assets/image/qrcode/village-guard.jpg";
+import qrIndustryCalculator from "@/assets/image/qrcode/industry-calculator.jpg";
+import qrParentToolkit from "@/assets/image/qrcode/parent-toolkit.jpg";
 export interface Project {
   name: string;
   description: string;
@@ -20,6 +24,13 @@ export interface Skill {
   url: string;
 }
 
+export interface MiniProgram {
+  name: string;
+  description: string;
+  qrcode: string;
+  tags: string[];
+}
+
 export interface ProfileConfig {
   // 基本信息
   name: string;
@@ -37,6 +48,9 @@ export interface ProfileConfig {
 
   // 技能标签
   skills: Skill[];
+
+  // 小程序列表
+  miniPrograms: MiniProgram[];
 
   // 备案信息
   icp: {
@@ -142,6 +156,33 @@ export const profileConfig: ProfileConfig = {
     { name: "Node.js", url: "https://nodejs.org/" },
     { name: "Webpack", url: "https://webpack.js.org/" },
     { name: "Vite", url: "https://vitejs.dev/" },
+  ],
+
+  miniPrograms: [
+    {
+      name: "边境守夜人",
+      description: "边境题材守夜策略小游戏，体验值守与巡逻的紧张决策",
+      qrcode: qrBorderWatchman,
+      tags: ["游戏", "策略", "小程序"],
+    },
+    {
+      name: "守卫村庄",
+      description: "塔防式村庄防守小游戏，布置防线抵御一波波来敌",
+      qrcode: qrVillageGuard,
+      tags: ["游戏", "塔防", "小程序"],
+    },
+    {
+      name: "行业计算器",
+      description: "面向行业场景的在线计算工具，快速完成常用参数换算",
+      qrcode: qrIndustryCalculator,
+      tags: ["工具", "计算器", "效率"],
+    },
+    {
+      name: "家长工具库",
+      description: "面向家长的实用工具合集，辅助日常育儿与学习管理",
+      qrcode: qrParentToolkit,
+      tags: ["工具", "家庭教育", "实用"],
+    },
   ],
   icp: {
     number: "京 ICP 备 2026005080 号",
