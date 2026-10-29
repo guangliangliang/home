@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import ParticleShowcase from "@/components/ParticleShowcase.vue";
 import BlackHoleShowcase from "@/components/BlackHoleShowcase.vue";
 import LiquidMetalShowcase from "@/components/LiquidMetalShowcase.vue";
 import SpatialGallery from "@/components/SpatialGallery.vue";
+
+const FlockShowcase = defineAsyncComponent(() => import("@/components/FlockShowcase.vue"));
+const KaleidoscopeShowcase = defineAsyncComponent(() => import("@/components/KaleidoscopeShowcase.vue"));
+const WaterCausticsShowcase = defineAsyncComponent(() => import("@/components/WaterCausticsShowcase.vue"));
 
 const exhibits = [
   { id: "metal", name: "液态金属", number: "01", english: "LIQUID METAL", color: "232, 187, 113", path: "M12 3c-2 4.8-7 7-7 11a7 7 0 0 0 14 0c0-4-5-6.2-7-11ZM8 14a4 4 0 0 0 4 4" },
@@ -11,6 +15,9 @@ const exhibits = [
   { id: "black-hole", name: "引力黑洞", number: "03", english: "EVENT HORIZON", color: "255, 186, 113", path: "M16.5 9.4a5 5 0 0 0-9-1.8M7.5 14.6a5 5 0 0 0 9 1.8M21 8.6c.6 1.6-3 4.1-8 5.9S3.6 16.2 3 14.6s3-4.1 8-5.9S20.4 7 21 8.6Z" },
   { id: "tunnel", name: "作品隧道", number: "04", english: "INFINITE TUNNEL", color: "154, 167, 255", path: "M3 3h18v18H3ZM7 7h10v10H7Zm3 3h4v4h-4ZM3 3l4 4m10 10 4 4M3 21l4-4M17 7l4-4" },
   { id: "glass", name: "液态玻璃", number: "05", english: "GLASS GALLERY", color: "129, 239, 216", path: "m12 3 8 5v8l-8 5-8-5V8Zm0 0v18M4 8l8 5 8-5M4 16l8-5 8 5" },
+  { id: "flock", name: "群鸟流场", number: "06", english: "FLOCKING FIELD", color: "135, 217, 255", path: "M3 7c4-1 7 1 9 5 2-4 5-6 9-5M5 14c3-1 5 0 7 3 2-3 4-4 7-3" },
+  { id: "kaleidoscope", name: "霓虹万花筒", number: "07", english: "KALEIDOSCOPE", color: "225, 155, 255", path: "m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Zm0 6 4 4-4 4-4-4Z" },
+  { id: "water", name: "水面焦散", number: "08", english: "WATER CAUSTICS", color: "113, 231, 224", path: "M12 3c-1.5 2-3 3.4-3 5a3 3 0 0 0 6 0c0-1.6-1.5-3-3-5ZM3 14c2-2 4 2 6 0s4 2 6 0 4 2 6 0M3 19c2-2 4 2 6 0s4 2 6 0 4 2 6 0" },
 ] as const;
 type Exhibit = typeof exhibits[number]["id"];
 const active = ref<Exhibit>("metal");
@@ -49,7 +56,7 @@ function navigateTabs(event: KeyboardEvent, index: number) {
     <header class="lab-header">
       <div class="lab-brand">
         <span class="lab-emblem" aria-hidden="true">✳</span>
-        <div><h2 id="visual-lab-heading">互动实验室</h2><p>{{ expanded ? '切换场景，试试移动鼠标或左右拖动。' : '一些关于粒子、光影和空间的小实验。' }}</p></div>
+        <div><h2 id="visual-lab-heading">互动实验室</h2><p>{{ expanded ? '切换场景，用鼠标或手指，让灵感动起来。' : '一些关于粒子、光影和空间的小实验。' }}</p></div>
       </div>
       <button ref="toggleButton" type="button" class="lab-toggle" :aria-expanded="expanded" aria-controls="visual-lab-content" @click="expanded ? collapse() : expanded = true">{{ expanded ? '收起' : '展开体验' }}<span aria-hidden="true">{{ expanded ? '−' : '+' }}</span></button>
     </header>
@@ -67,6 +74,9 @@ function navigateTabs(event: KeyboardEvent, index: number) {
       <ParticleShowcase v-if="active === 'particles'" embedded />
       <BlackHoleShowcase v-else-if="active === 'black-hole'" />
       <LiquidMetalShowcase v-else-if="active === 'metal'" />
+      <FlockShowcase v-else-if="active === 'flock'" />
+      <KaleidoscopeShowcase v-else-if="active === 'kaleidoscope'" />
+      <WaterCausticsShowcase v-else-if="active === 'water'" />
       <SpatialGallery v-else :mode="active === 'tunnel' ? 'tunnel' : 'glass'" />
     </div>
 
@@ -101,7 +111,7 @@ function navigateTabs(event: KeyboardEvent, index: number) {
 .lab-toggle { display: flex; align-items: center; gap: 18px; flex-shrink: 0; padding: 10px 16px; min-height: 44px; border: 1px solid #ffffff40; border-radius: 10px; background: #ffffff0a; color: #fff; font: inherit; font-size: 12px; cursor: pointer; }
 .lab-toggle span { font-size: 20px; line-height: 1; font-weight: 300; }
 .lab-toggle:hover { background: #ffffff1c; }
-.lab-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; max-width: 850px; padding: 0 28px 16px; }
+.lab-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 0 28px 16px; }
 .lab-tabs button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 0; padding: 8px 10px; font: inherit; font-size: 12px; white-space: nowrap; color: #ffffffe0; border: 1px solid transparent; border-radius: 10px; background: transparent; cursor: pointer; transition: background .2s, border-color .2s; }
 .lab-tabs button:hover { background: #ffffff0d; }
 .lab-tabs button.is-active { color: #fff; border-color: #ffffff45; background: #ffffff20; }
