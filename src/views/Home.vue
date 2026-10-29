@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { profileConfig } from "@/config/profile";
 import ThemeToggle from "@/components/ThemeToggle.vue";
+import VisualLab from "@/components/VisualLab.vue";
 
 const {
   name,
@@ -148,7 +149,7 @@ const getParticleStyle = (i: number) => {
       </section>
 
       <!-- 项目区域 -->
-      <section class="section projects-section">
+      <section id="projects" class="section projects-section">
         <h2 class="section-title">🚀 项目合集</h2>
         <div class="projects">
           <a
@@ -201,6 +202,8 @@ const getParticleStyle = (i: number) => {
           </div>
         </div>
       </section>
+
+      <VisualLab />
 
       <!-- 页脚 -->
       <footer class="footer">
