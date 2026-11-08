@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { profileConfig } from "@/config/profile";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 import VisualLab from "@/components/VisualLab.vue";
+import WechatAccount from "@/components/WechatAccount.vue";
 import { usePageEffects } from "@/composables/usePageEffects";
 
 const page = ref<HTMLElement | null>(null);
@@ -20,6 +21,7 @@ const {
   projects,
   skills,
   miniPrograms,
+  wechatAccount,
   icp,
 } = profileConfig;
 
@@ -137,6 +139,9 @@ const getParticleStyle = (i: number) => {
               <span class="social-icon">{{ getSocialIcon(link.icon) }}</span>
               <span class="social-name">{{ link.name }}</span>
             </a>
+            <a href="#wechat-account" class="social-link" :aria-label="`查看微信公众号${wechatAccount.name}`">
+              <span class="social-name">公众号 · {{ wechatAccount.name }}</span>
+            </a>
           </div>
       </header>
 
@@ -214,6 +219,8 @@ const getParticleStyle = (i: number) => {
           </div>
         </div>
       </section>
+
+      <WechatAccount :account="wechatAccount" />
 
       <VisualLab />
 

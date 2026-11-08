@@ -5,6 +5,7 @@ import qrBorderWatchman from "@/assets/image/qrcode/border-watchman.jpg";
 import qrVillageGuard from "@/assets/image/qrcode/village-guard.jpg";
 import qrIndustryCalculator from "@/assets/image/qrcode/industry-calculator.jpg";
 import qrParentToolkit from "@/assets/image/qrcode/parent-toolkit.jpg";
+import qrMingyuehou from "@/assets/image/qrcode/mingyuehou.jpg";
 export interface Project {
   name: string;
   description: string;
@@ -31,6 +32,20 @@ export interface MiniProgram {
   tags: string[];
 }
 
+export interface WechatArticle {
+  title: string;
+  description: string;
+  url: string;
+}
+
+export interface WechatAccount {
+  name: string;
+  description: string;
+  qrcode: string;
+  tags: string[];
+  articles: WechatArticle[];
+}
+
 export interface ProfileConfig {
   // 基本信息
   name: string;
@@ -51,6 +66,9 @@ export interface ProfileConfig {
 
   // 小程序列表
   miniPrograms: MiniProgram[];
+
+  // 微信公众号与精选文章
+  wechatAccount: WechatAccount;
 
   // 备案信息
   icp: {
@@ -184,6 +202,29 @@ export const profileConfig: ProfileConfig = {
       tags: ["工具", "家庭教育", "实用"],
     },
   ],
+  wechatAccount: {
+    name: "明月后",
+    description: "分享心理学文章与实用生活技巧，在日常里理解自己，把想法慢慢变成行动。",
+    qrcode: qrMingyuehou,
+    tags: ["心理学", "实用技巧"],
+    articles: [
+      {
+        title: "真正拉开差距的，往往是那些没人看见的日子",
+        description: "在缺少反馈的日子里，理解坚持与积累的意义。",
+        url: "https://mp.weixin.qq.com/s/ZyIybsm7SQ1imRnYB8MYCw",
+      },
+      {
+        title: "一个人真正的底气，不是聪明，是相信自己",
+        description: "看见自我怀疑，学着建立对自己的信任。",
+        url: "https://mp.weixin.qq.com/s/eVrF45H1vqx9OcZZRsmM8Q",
+      },
+      {
+        title: "很多人输的不是努力，而是从来没有复盘",
+        description: "通过复盘，把每次经历转化成可积累的经验。",
+        url: "https://mp.weixin.qq.com/s/uUfRilkDB9RqGIv9r1HwHg",
+      },
+    ],
+  },
   icp: {
     number: "京 ICP 备 2026005080 号",
     url: "https://beian.miit.gov.cn/",
