@@ -5,10 +5,10 @@
   
   /* 玻璃效果 */
   --glass-bg-light: rgba(255, 255, 255, 0.18);
-  --glass-bg-dark: rgba(0, 0, 0, 0.35);
+  --glass-bg-dark: rgba(64, 70, 113, 0.3);
   
   --glass-border-light: rgba(255, 255, 255, 0.35);
-  --glass-border-dark: rgba(255, 255, 255, 0.12);
+  --glass-border-dark: rgba(193, 205, 255, 0.18);
   
   /* 文字颜色 */
   --text-primary-light: #ffffff;
@@ -18,8 +18,8 @@
   --text-secondary-dark: rgba(240, 240, 240, 0.75);
   
   /* 卡片背景 */
-  --card-bg-light: rgba(255, 255, 255, 0.98);
-  --card-bg-dark: rgba(20, 20, 35, 0.95);
+  --card-bg-light: var(--glass-bg-light);
+  --card-bg-dark: linear-gradient(135deg, rgba(151, 169, 236, 0.16), rgba(138, 124, 205, 0.1));
   
   --card-text-light: #2d3748;
   --card-text-dark: #e2e8f0;
@@ -29,7 +29,7 @@
   
   /* 阴影 */
   --shadow-light: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-dark: 0 8px 32px rgba(10, 12, 34, 0.22);
   
   /* 技能渐变 */
   --skill-gradient-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

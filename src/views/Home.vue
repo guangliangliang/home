@@ -612,7 +612,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .project-card {
-  background: var(--glass-bg);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
@@ -730,7 +730,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .miniprogram-card {
-  background: var(--glass-bg);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
