@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { profileConfig } from "@/config/profile";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 import VisualLab from "@/components/VisualLab.vue";
+import { usePageEffects } from "@/composables/usePageEffects";
+
+const page = ref<HTMLElement | null>(null);
+const pointerLight = ref<HTMLElement | null>(null);
+usePageEffects(page, pointerLight);
 
 const {
   name,
@@ -79,18 +85,21 @@ const getParticleStyle = (i: number) => {
     top: pos.top,
     left: pos.left,
     animationDuration: pos.duration,
-    animationDelay: `${-Math.random() * 30}s`,
+    animationDelay: `${-((i * 7.3) % 30)}s`,
   };
 };
 </script>
 
 <template>
-  <div class="home">
+  <div ref="page" class="home">
     <ThemeToggle />
     
     <!-- 动态背景 -->
-    <div class="bg-container">
+    <div class="bg-container" aria-hidden="true">
       <div class="bg-gradient"></div>
+      <div class="aurora aurora-blue"></div>
+      <div class="aurora aurora-pink"></div>
+      <div ref="pointerLight" class="pointer-light"></div>
       <div class="bg-particles">
         <div v-for="i in 40" :key="i" class="particle" :style="getParticleStyle(i)"></div>
       </div>
@@ -99,16 +108,16 @@ const getParticleStyle = (i: number) => {
     <div class="container">
       <!-- 头部区域 -->
       <header class="header">
-        <div class="avatar-container">
+        <div class="avatar-container" data-reveal>
           <div class="avatar-ring-1"></div>
           <div class="avatar-ring-2"></div>
           <img :src="avatar" :alt="name" class="avatar" />
         </div>
-        <h1 class="name">{{ name }}</h1>
-        <p class="title">{{ title }}</p>
-        <p class="bio">{{ bio }}</p>
+        <h1 class="name" data-reveal style="--reveal-delay: 60ms">{{ name }}</h1>
+        <p class="title" data-reveal style="--reveal-delay: 120ms">{{ title }}</p>
+        <p class="bio" data-reveal style="--reveal-delay: 180ms">{{ bio }}</p>
 
-        <div class="contact-info">
+        <div class="contact-info" data-reveal style="--reveal-delay: 220ms">
           <div class="contact-item">📍 {{ location }}</div>
           <a :href="`mailto:${email}`" class="email-btn">
             <span class="email-icon">📧</span>
@@ -116,7 +125,7 @@ const getParticleStyle = (i: number) => {
           </a>
         </div>
 
-          <div class="social-links">
+          <div class="social-links" data-reveal style="--reveal-delay: 260ms">
             <a
               v-for="link in socialLinks"
               :key="link.name"
@@ -132,7 +141,7 @@ const getParticleStyle = (i: number) => {
       </header>
 
       <!-- 技能区域 -->
-      <section class="section skills-section">
+      <section class="section skills-section" data-reveal>
         <h2 class="section-title">💡 技能栈</h2>
         <div class="skills">
           <a
@@ -150,15 +159,17 @@ const getParticleStyle = (i: number) => {
 
       <!-- 项目区域 -->
       <section id="projects" class="section projects-section">
-        <h2 class="section-title">🚀 项目合集</h2>
+        <h2 class="section-title" data-reveal>🚀 项目合集</h2>
         <div class="projects">
           <a
-            v-for="project in projects"
+            v-for="(project, index) in projects"
             :key="project.name"
             :href="project.url"
             target="_blank"
             rel="noopener noreferrer"
             class="project-card"
+            data-reveal
+            :style="{ '--reveal-delay': `${(index % 3) * 65}ms` }"
           >
             <div class="project-icon">{{ project.icon }}</div>
             <div class="project-content">
@@ -176,12 +187,13 @@ const getParticleStyle = (i: number) => {
 
       <!-- 小程序区域 -->
       <section class="section miniprograms-section">
-        <h2 class="section-title">📱 微信小程序</h2>
+        <h2 class="section-title" data-reveal>📱 微信小程序</h2>
         <div class="miniprograms">
           <div
             v-for="mp in miniPrograms"
             :key="mp.name"
             class="miniprogram-card"
+            data-reveal
           >
             <div class="qrcode-wrapper">
               <img
@@ -206,7 +218,7 @@ const getParticleStyle = (i: number) => {
       <VisualLab />
 
       <!-- 页脚 -->
-      <footer class="footer">
+      <footer class="footer" data-reveal>
         <p>© {{ new Date().getFullYear() }} {{ name }}. All rights reserved.</p>
         <div class="icp-links">
           <a :href="icp.url" target="_blank" rel="noopener noreferrer">
@@ -230,6 +242,7 @@ const getParticleStyle = (i: number) => {
   padding: 70px 20px;
   position: relative;
   overflow-x: hidden;
+  isolation: isolate;
 }
 
 /* 动态背景 */
@@ -240,6 +253,8 @@ const getParticleStyle = (i: number) => {
   width: 100%;
   height: 100%;
   z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .bg-gradient {
@@ -250,6 +265,53 @@ const getParticleStyle = (i: number) => {
   height: 100%;
   background: var(--bg-gradient);
   transition: background 0.5s ease;
+}
+
+/* Soft moving light keeps the existing purple palette. */
+.aurora {
+  position: absolute;
+  width: 65vw;
+  height: 65vw;
+  min-width: 520px;
+  min-height: 520px;
+  border-radius: 50%;
+  filter: blur(65px);
+  opacity: 0.36;
+  animation: auroraDrift 24s ease-in-out infinite alternate;
+}
+
+.aurora-blue {
+  top: -35%;
+  left: -20%;
+  background: radial-gradient(circle, #7dd3fc, transparent 65%);
+}
+
+.aurora-pink {
+  right: -25%;
+  bottom: -40%;
+  background: radial-gradient(circle, #f0abfc, transparent 65%);
+  animation-delay: -12s;
+  animation-direction: alternate-reverse;
+}
+
+.pointer-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.17), transparent 65%);
+  opacity: 0;
+  transition: transform 0.65s cubic-bezier(0.16, 0.7, 0.3, 1), opacity 0.5s ease;
+}
+
+.pointer-light.is-active {
+  opacity: 1;
+}
+
+@keyframes auroraDrift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(12vw, 8vh, 0) scale(1.12); }
 }
 
 .bg-particles {
@@ -315,11 +377,11 @@ const getParticleStyle = (i: number) => {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
-  background-size: 400% 400%;
-  animation: rotate 3s linear infinite, pulse 2s ease-in-out infinite;
+  background: conic-gradient(from 0deg, #7dd3fc, transparent 28%, #f0abfc 55%, transparent 80%, #7dd3fc);
+  mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation: rotate 12s linear infinite;
   z-index: -2;
-  filter: blur(2px);
+  filter: drop-shadow(0 0 5px rgba(186, 230, 253, 0.65));
 }
 
 .avatar-ring-2 {
@@ -370,7 +432,22 @@ const getParticleStyle = (i: number) => {
   font-weight: 900;
   letter-spacing: -2px;
   color: #ffffff;
-  text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(102,126,234,0.5);
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+@supports (background-clip: text) {
+  .name {
+    background: linear-gradient(110deg, #fff 30%, #c4f1ff 44%, #e9d5ff 50%, #fff 65%);
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: nameShimmer 9s ease-in-out infinite;
+  }
+}
+
+@keyframes nameShimmer {
+  0%, 20% { background-position: 100% 0; }
+  70%, 100% { background-position: 0 0; }
 }
 
 .title {
@@ -459,12 +536,6 @@ const getParticleStyle = (i: number) => {
   font-size: 1rem;
 }
 
-.social-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
 .social-icon {
   font-size: 1.4rem;
 }
@@ -548,8 +619,8 @@ const getParticleStyle = (i: number) => {
   padding: 28px;
   text-decoration: none;
   color: var(--text-primary);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 2px solid var(--glass-border);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--glass-border);
   display: flex;
   gap: 18px;
   align-items: flex-start;
@@ -560,38 +631,61 @@ const getParticleStyle = (i: number) => {
 .project-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--skill-gradient);
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(300px circle at var(--card-x, 50%) var(--card-y, 50%), #fff, #b5e8ff 20%, transparent 70%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.project-card:hover::before {
-  transform: scaleX(1);
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(380px circle at var(--card-x, 50%) var(--card-y, 50%), rgba(255, 255, 255, 0.16), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.project-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-  border-color: #667eea;
+.project-card:focus-visible {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
+    box-shadow: 0 22px 45px rgba(22, 15, 61, 0.24);
+    border-color: rgba(210, 234, 255, 0.5);
+  }
+
+  .project-card[data-tilting]::before,
+  .project-card[data-tilting]::after {
+    opacity: 1;
+  }
 }
 
 .project-icon {
   font-size: 2.5rem;
   flex-shrink: 0;
   transition: transform 0.4s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .project-card:hover .project-icon {
-  transform: scale(1.2) rotate(10deg);
+  transform: translateY(-2px) rotate(-5deg);
 }
 
 .project-content {
   flex: 1;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .project-name {
@@ -615,8 +709,8 @@ const getParticleStyle = (i: number) => {
 }
 
 .project-tag {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
   padding: 5px 12px;
   border-radius: 50px;
   font-size: 0.8rem;
@@ -625,8 +719,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .project-card:hover .project-tag {
-  background: rgba(102, 126, 234, 0.2);
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.19);
 }
 
 /* 小程序区域 */
@@ -670,7 +763,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .miniprogram-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-4px);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   border-color: #667eea;
 }
@@ -692,7 +785,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .miniprogram-card:hover .qrcode-wrapper {
-  transform: scale(1.04);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
 }
 
 .qrcode-img {
@@ -727,8 +820,8 @@ const getParticleStyle = (i: number) => {
 }
 
 .miniprogram-tag {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
   padding: 5px 12px;
   border-radius: 50px;
   font-size: 0.8rem;
@@ -737,8 +830,7 @@ const getParticleStyle = (i: number) => {
 }
 
 .miniprogram-card:hover .miniprogram-tag {
-  background: rgba(102, 126, 234, 0.2);
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.19);
 }
 
 .scan-hint {
@@ -773,11 +865,81 @@ const getParticleStyle = (i: number) => {
   align-items: center;
   gap: 10px;
   margin-top: 12px;
+  flex-wrap: wrap;
 }
 
 .icp-links .divider {
   color: var(--text-secondary);
   opacity: 0.5;
+}
+
+.reveal-pending {
+  opacity: 0;
+  translate: 0 22px;
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    translate 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.reveal-pending.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.home a:focus-visible {
+  outline: 2px solid #e0f2fe;
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home *,
+  .home *::before,
+  .home *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal-pending {
+    opacity: 1;
+    translate: none;
+  }
+
+  .pointer-light,
+  .bg-particles {
+    display: none;
+  }
+
+  .home a:hover,
+  .home .avatar:hover,
+  .home .miniprogram-card:hover,
+  .project-card:hover .project-icon {
+    transform: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .pointer-light {
+    display: none;
+  }
+
+  .aurora {
+    animation: none;
+    filter: blur(40px);
+  }
+
+  .particle:nth-child(n + 17) {
+    display: none;
+  }
+
+  .home a:hover,
+  .home .avatar:hover,
+  .home .miniprogram-card:hover,
+  .project-card:hover .project-icon {
+    transform: none;
+  }
 }
 
 /* 响应式设计 */
